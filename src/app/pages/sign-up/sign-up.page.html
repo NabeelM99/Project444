@@ -1,13 +1,124 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>signUp</ion-title>
+    <ion-buttons>
+      <ion-button slot="start">
+        <ion-icon name="reorder-three-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>sign-up</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">signUp</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="container p-3 mt-4">
+    <ion-grid>
+      <ion-row>
+        <ion-col
+          *ngFor="let button of buttons"
+          offset="1"
+          (click)="changeColor(button)"
+          [class.active]="button.active"
+        >
+          <ion-button shape="round" size="large">{{button.label}}</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <form
+      [formGroup]="signUpForm"
+      action=""
+      class="mt-5"
+      (ngSubmit)="SignUp(signUpForm.value)"
+    >
+      <ion-label for="username" class="form-label">User name:</ion-label>
+      <ion-input
+        formControlName="username"
+        id="username"
+        class="form-control"
+        placeholder="Enter user name"
+        [class.is-invalid]="signUpForm.controls['username'].invalid && signUpForm.controls['username'].touched"
+      ></ion-input>
+      <div
+        *ngIf="signUpForm.controls['username'].invalid && signUpForm.controls['username'].touched"
+        class="invalid-feedback"
+      >
+        <div *ngIf="signUpForm.controls['username'].hasError('required')">
+          Username is required.
+        </div>
+        <div *ngIf="signUpForm.controls['username'].hasError('pattern')">
+          Username must contain only letters and spaces.
+        </div>
+        <div *ngIf="signUpForm.controls['username'].hasError('minlength')">
+          Username must be at least 5 characters long.
+        </div>
+        <div *ngIf="signUpForm.controls['username'].hasError('maxlength')">
+          Username cannot be more than 20 characters long.
+        </div>
+      </div>
+      <ion-label for="password" class="form-label">Password:</ion-label>
+      <ion-input
+        formControlName="password"
+        id="passsword"
+        class="form-control"
+        placeholder="Enter password"
+        [class.is-invalid]="signUpForm.controls['password'].invalid && signUpForm.controls['password'].touched"
+      ></ion-input>
+      <div
+        *ngIf="signUpForm.controls['password'].invalid && signUpForm.controls['password'].touched"
+        class="invalid-feedback"
+      >
+        <div *ngIf="signUpForm.controls['password'].hasError('required')">
+          Password is required.
+        </div>
+        <div *ngIf="signUpForm.controls['password'].hasError('pattern')">
+          Password must contain at least one lowercase letter, one uppercase
+          letter, one digit, and one special character ($!%*?&).
+        </div>
+        <div *ngIf="signUpForm.controls['password'].hasError('minlength')">
+          Password must be at least 8 characters long.
+        </div>
+      </div>
+      <ion-label for="confirm-password" class="form-label"
+        >Confirm password:</ion-label
+      >
+      <ion-input
+        formControlName="confirmPassword"
+        id="confirm-password"
+        class="form-control"
+        placeholder="Enter confirm password"
+        [class.is-invalid]="signUpForm.controls['confirmPassword'].invalid && signUpForm.controls['confirmPassword'].touched"
+      ></ion-input>
+      <div
+        *ngIf="signUpForm.controls['confirmPassword'].invalid && signUpForm.controls['confirmPassword'].touched"
+        class="invalid-feedback"
+      >
+        <div
+          *ngIf="signUpForm.controls['confirmPassword'].hasError('required')"
+        >
+          Confirm Password is required.
+        </div>
+        <div *ngIf="signUpForm.controls['confirmPassword'].hasError('pattern')">
+          Confirm Password must contain at least one lowercase letter, one
+          uppercase letter, one digit, and one special character ($!%*?&).
+        </div>
+        <div
+          *ngIf="signUpForm.controls['confirmPassword'].hasError('minlength')"
+        >
+          Confirm Password must be at least 8 characters long.
+        </div>
+      </div>
+      <ion-grid class="mt-3">
+        <ion-row>
+          <ion-col offset="4">
+            <ion-button
+              [disabled]="!signUpForm.valid"
+              type="submit"
+              size="large"
+              >Sign Up</ion-button
+            >
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
 </ion-content>
