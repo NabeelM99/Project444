@@ -72,7 +72,6 @@ export class SignUpPage {
     this.buttons.forEach((btn) => {
       btn.active = false;
     });
-    console.log('changed');
     button.active = true;
     this.selectedUser = button.label;
   }
