@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { PasswordValidatorPage } from '../password-validator/password-validator.page';
 import { AlertController } from '@ionic/angular';
+
 export interface Button {
   label: string;
   active: boolean;
@@ -24,7 +25,7 @@ export class SignUpPage {
   ];
 
   signUpForm!: FormGroup;
-  selectedUser!: string;
+  selectedUser!: string | null;
   username!: string;
   password!: string;
   confirmPassword!: string;
@@ -76,5 +77,21 @@ export class SignUpPage {
     this.selectedUser = button.label;
   }
 
-  SignUp(value: any) {}
+  async SignUp(value: any) {
+    this.username = value.username;
+    this.password = value.password;
+    if (this.selectedUser == 'Guest') {
+      // guest sign up
+    } else if (this.selectedUser == 'Client') {
+      // client sign up
+    } else {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Please select a user type',
+        buttons: ['OK'],
+      });
+
+      await alert.present();
+    }
+  }
 }
