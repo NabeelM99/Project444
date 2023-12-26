@@ -7,6 +7,7 @@ import {
   QuerySnapshot,
   addDoc,
   collection,
+  doc,
   getDoc,
   getDocs,
   query,
@@ -60,6 +61,8 @@ export class UserManagementService {
   clients$!: Observable<Client[]>;
   guests$!: Observable<Guest[]>;
   admins$!: Observable<Admin[]>;
+
+  userID!: string;
 
   constructor(public firestore: Firestore) {
     this.getAdmins();
@@ -202,5 +205,21 @@ export class UserManagementService {
     } else {
       return user.docs[0].ref;
     }
+  }
+
+  async getAdmin(id: string) {
+    const admin = doc(this.firestore, 'users', id);
+    const data = await getDoc(admin);
+    return data.data() as Admin;
+  }
+
+  async getClient(id: string) {
+    const client = doc(this.firestore, 'users', id);
+    return getDoc(client);
+  }
+
+  async getGuest(id: string) {
+    const guest = doc(this.firestore, 'users', id);
+    return getDoc(guest);
   }
 }

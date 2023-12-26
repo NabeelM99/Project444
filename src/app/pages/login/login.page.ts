@@ -155,7 +155,8 @@ export class LoginPage {
                   {
                     text: 'OK',
                     handler: () => {
-                      this.navController.navigateForward('/home');
+                      this.userManagementService.userID = docRef.id;
+                      this.navController.navigateForward('/tabs/tab2');
                     },
                   },
                 ],

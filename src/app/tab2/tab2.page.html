@@ -1,17 +1,60 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+    <ion-title> Home </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="container">
+    <h1>Welcome, Jasem Ali</h1>
+    <p>
+      This account is designated as an admin, which implies it will possess
+      specific functionalities. These include creating, updating, and deleting
+      halls, confirming reservations and events, as well as responding to
+      messages from clients.
+    </p>
+  </div>
+  <ion-accordion-group>
+    <ion-accordion value="first">
+      <ion-item slot="header">
+        <ion-label>Client Requests</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <ion-card color="warning">
+          <ion-card-header>
+            <ion-card-title>AL-Dana Hall</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-grid>
+              <ion-col size="3">
+                <ion-icon name="person-outline"></ion-icon>
+              </ion-col>
+              <ion-col>
+                <ion-label>Salem Saleh </ion-label>
+              </ion-col>
+            </ion-grid>
+            <ion-grid>
+              <ion-col size="3">
+                <ion-icon name="calendar-number-outline"></ion-icon>
+              </ion-col>
+              <ion-col>
+                <ion-label>14/5/2022 - 16/5/2022</ion-label>
+              </ion-col>
+            </ion-grid>
+            <ion-grid>
+              <ion-col size="3">
+                <ion-icon name="time-outline"></ion-icon>
+              </ion-col>
+              <ion-col>
+                <ion-label>4:00 PM</ion-label>
+              </ion-col>
+            </ion-grid>
+          </ion-card-content>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+          <ion-button color="success">Approve</ion-button>
+          <ion-button color="danger">Reject</ion-button>
+        </ion-card>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
 </ion-content>
