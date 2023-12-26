@@ -5,9 +5,70 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">login</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+  <div class="container p-3 mt-4">
+    <ion-grid>
+      <ion-row>
+        <ion-col
+          size="4"
+          *ngFor="let button of buttons"
+          (click)="changeColor(button)"
+          [class.active]="button.active"
+        >
+          <ion-button shape="round" size="large">{{button.label}}</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <form
+      [formGroup]="loginForm"
+      action=""
+      class="mt-5"
+      (ngSubmit)="Login(loginForm.value)"
+    >
+      <ion-label for="username" class="form-label">User name:</ion-label>
+      <ion-input
+        formControlName="username"
+        id="username"
+        class="form-control"
+        placeholder="Enter user name"
+        [class.is-invalid]="loginForm.controls['username'].invalid && loginForm.controls['username'].touched"
+      ></ion-input>
+      <div
+        *ngIf="loginForm.controls['username'].invalid && loginForm.controls['username'].touched"
+        class="invalid-feedback"
+      >
+        <div *ngIf="loginForm.controls['username'].hasError('required')">
+          Username is required.
+        </div>
+        <div *ngIf="loginForm.controls['username'].hasError('pattern')">
+          Username must contain only letters and spaces.
+        </div>
+      </div>
+      <ion-label for="password" class="form-label">Password:</ion-label>
+      <ion-input
+        formControlName="password"
+        type="password"
+        id="password"
+        class="form-control"
+        placeholder="Enter password"
+        [class.is-invalid]="loginForm.controls['password'].invalid && loginForm.controls['password'].touched"
+      ></ion-input>
+      <div *ngIf="loginForm.controls['password'].hasError('required')">
+        Password is required.
+      </div>
+      <ion-grid class="mt-3">
+        <ion-row>
+          <ion-col offset="4">
+            <ion-button
+              type="submit"
+              [disabled]="!loginForm.valid"
+              shape="round"
+              size="large"
+              >Login</ion-button
+            >
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div></ion-content
+>

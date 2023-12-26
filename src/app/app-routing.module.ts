@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./pages/sign-up/sign-up.module').then((m) => m.SignUpPageModule),
+      import('./pages/login/login.module').then((m) => m.LoginPageModule),
   },
   {
     path: 'login',
@@ -19,7 +19,10 @@ const routes: Routes = [
   },
   {
     path: 'password-validator',
-    loadChildren: () => import('./pages/password-validator/password-validator.module').then( m => m.PasswordValidatorPageModule)
+    loadChildren: () =>
+      import('./pages/password-validator/password-validator.module').then(
+        (m) => m.PasswordValidatorPageModule
+      ),
   },
 ];
 @NgModule({

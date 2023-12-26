@@ -7,6 +7,7 @@ import {
   QuerySnapshot,
   addDoc,
   collection,
+  getDoc,
   getDocs,
   query,
   where,
@@ -147,33 +148,59 @@ export class UserManagementService {
     return addDoc(this.usersReferance, client);
   }
 
-  loginGuest(
+  async loginClient(
     username: string,
     password: string
-  ): Promise<QuerySnapshot<DocumentData, DocumentData>> {
-    {
-      const queryGuest = query(
-        this.usersReferance,
-        where('user_type', '==', 'guest'),
-        where('username', '==', username),
-        where('password', '==', password)
-      );
-      return getDocs(queryGuest);
+  ): Promise<QuerySnapshot<DocumentData, DocumentData> | null> {
+    const queryClient = query(
+      this.usersReferance,
+      where('user_type', '==', 'client'),
+      where('username', '==', username),
+      where('password', '==', password)
+    );
+    const result = await getDocs(queryClient);
+
+    if (result.empty) {
+      return null;
+    } else {
+      return result;
     }
   }
 
-  loginClient(
+  async loginGuest(
     username: string,
     password: string
-  ): Promise<QuerySnapshot<DocumentData, DocumentData>> {
-    {
-      const queryClient = query(
-        this.usersReferance,
-        where('user_type', '==', 'client'),
-        where('username', '==', username),
-        where('password', '==', password)
-      );
-      return getDocs(queryClient);
+  ): Promise<QuerySnapshot<DocumentData, DocumentData> | null> {
+    const queryGuest = query(
+      this.usersReferance,
+      where('user_type', '==', 'guest'),
+      where('username', '==', username),
+      where('password', '==', password)
+    );
+    const result = await getDocs(queryGuest);
+
+    if (result.empty) {
+      return null;
+    } else {
+      return result;
+    }
+  }
+
+  async loginAdmin(
+    username: string,
+    password: string
+  ): Promise<DocumentReference<DocumentData, DocumentData> | null> {
+    const queryAdmin = query(
+      this.usersReferance,
+      where('user_type', '==', 'admin'),
+      where('username', '==', username),
+      where('password', '==', password)
+    );
+    const user = await getDocs(queryAdmin);
+    if (user.empty) {
+      return null;
+    } else {
+      return user.docs[0].ref;
     }
   }
 }
