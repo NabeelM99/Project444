@@ -58,6 +58,7 @@
       <ion-label for="password" class="form-label">Password:</ion-label>
       <ion-input
         formControlName="password"
+        type="password"
         id="passsword"
         class="form-control"
         placeholder="Enter password"
@@ -84,6 +85,7 @@
       <ion-input
         formControlName="confirmPassword"
         id="confirm-password"
+        type="password"
         class="form-control"
         placeholder="Enter confirm password"
         [class.is-invalid]="signUpForm.controls['confirmPassword'].invalid && signUpForm.controls['confirmPassword'].touched"
