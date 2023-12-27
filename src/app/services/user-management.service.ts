@@ -68,7 +68,7 @@ export interface request {
 export interface Hall {
   id: string;
   name: string;
-  capacity: number;
+  capacity: string;
   price: number;
   description: string;
   location: string;
@@ -107,6 +107,10 @@ export class UserManagementService {
   getHalls() {
     const q = query(collection(this.firestore, 'Hall'));
     this.halls$ = collectionData(q, { idField: 'id' }) as Observable<Hall[]>;
+  }
+
+  createHall(hall: Hall): Promise<DocumentReference> {
+    return addDoc(collection(this.firestore, 'Hall'), hall);
   }
 
   getClientsRequestsPending() {

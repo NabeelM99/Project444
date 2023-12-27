@@ -37,5 +37,7 @@ export class Tab3Page {
     }
   }
 
-  createHall() {}
+  createHall() {
+    this.navController.navigateForward('/create-hall');
+  }
 }

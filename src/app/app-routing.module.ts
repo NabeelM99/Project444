@@ -23,7 +23,11 @@ const routes: Routes = [
       import('./pages/password-validator/password-validator.module').then(
         (m) => m.PasswordValidatorPageModule
       ),
+  },  {
+    path: 'create-hall',
+    loadChildren: () => import('./pages/create-hall/create-hall.module').then( m => m.CreateHallPageModule)
   },
+
 ];
 @NgModule({
   imports: [
