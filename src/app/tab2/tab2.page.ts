@@ -4,6 +4,7 @@ import {
   Admin,
 } from '../services/user-management.service';
 import { AlertController, NavController } from '@ionic/angular';
+import { computeStackId } from '@ionic/angular/common/directives/navigation/stack-utils';
 
 @Component({
   selector: 'app-tab2',

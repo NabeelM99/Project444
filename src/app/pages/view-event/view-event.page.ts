@@ -55,6 +55,6 @@ export class ViewEventPage implements OnInit {
   }
 
   goBack() {
-    this.navController.navigateBack('/');
+    this.navController.navigateBack('/tabs/tab1');
   }
 }

@@ -143,7 +143,9 @@ export class UserManagementService {
   admins$!: Observable<Admin[]>;
   events$!: Observable<event[]>;
   clientMessages$!: Observable<ClietnMessage[]>;
+
   userID: string = '';
+  userType: string = '';
 
   constructor(public firestore: Firestore) {
     this.getAdmins();
@@ -153,6 +155,15 @@ export class UserManagementService {
     this.getHalls();
     this.getEvents();
     this.getClientMessages();
+  }
+
+  async getUserIDAndType(id: any) {
+    const docRef = await getDoc(doc(this.firestore, 'users', id));
+    if (docRef.exists()) {
+      this.userID = docRef.id;
+      this.userType = docRef.data()['user_type'];
+      console.log('User Type:', this.userType);
+    }
   }
 
   getGuestByID(id: string) {

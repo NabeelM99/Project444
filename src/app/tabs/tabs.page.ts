@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { UserManagementService } from '../services/user-management.service';
 
 @Component({
   selector: 'app-tabs',
@@ -7,8 +7,10 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['tabs.page.scss'],
 })
 export class TabsPage {
-  public id!: string;
-  constructor(public route: ActivatedRoute) {
-    this.id = this.route.snapshot.paramMap.get('id')!;
+  userType!: string;
+
+  constructor(userManagementService: UserManagementService) {
+    this.userType = userManagementService.userType;
+    console.log('TabsPage - User Type:', this.userType);
   }
 }

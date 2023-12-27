@@ -9,6 +9,7 @@ import { AlertController, NavController } from '@ionic/angular';
 })
 export class Tab1Page {
   userID: string = '';
+  userType: string = '';
   constructor(
     public userManagementService: UserManagementService,
     public alertController: AlertController,
