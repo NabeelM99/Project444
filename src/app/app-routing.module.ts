@@ -59,6 +59,13 @@ const routes: Routes = [
         (m) => m.ViewEventPageModule
       ),
   },
+  {
+    path: 'message-replay/:id',
+    loadChildren: () =>
+      import('./pages/message-replay/message-replay.module').then(
+        (m) => m.MessageReplayPageModule
+      ),
+  },
 ];
 @NgModule({
   imports: [

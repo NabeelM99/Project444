@@ -67,7 +67,7 @@ export interface request {
 }
 
 export interface Hall {
-  id: string;
+  id?: string;
   name: string;
   capacity: string;
   price: number;
@@ -84,6 +84,7 @@ export interface Hall {
 }
 
 export interface reservation {
+  id?: string;
   clientID: string;
   start_date: string;
   end_date: string;
@@ -97,6 +98,7 @@ export interface reservation {
 }
 
 export interface event {
+  id?: string;
   name: string;
   agenda: string[];
   attendance: string[];
@@ -112,7 +114,21 @@ export interface event {
   requests: string[];
   hallName: string;
 }
+export interface ClietnMessage {
+  id: string;
+  clientID: string;
+  clientName: string;
+  message: string;
+  headline: string;
+}
 
+export interface adminReply {
+  id?: string;
+  clientID: string;
+  message_headline: string;
+  replay_message: string;
+  messageID: string;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -125,6 +141,7 @@ export class UserManagementService {
   guests$!: Observable<Guest[]>;
   admins$!: Observable<Admin[]>;
   events$!: Observable<event[]>;
+  clientMessages$!: Observable<ClietnMessage[]>;
   userID: string = '';
 
   constructor(public firestore: Firestore) {
@@ -134,11 +151,31 @@ export class UserManagementService {
     this.getClientsRequestsPending();
     this.getHalls();
     this.getEvents();
+    this.getClientMessages();
   }
 
   getGuestByID(id: string) {
     const docRef = doc(this.firestore, 'users', id);
     return getDoc(docRef);
+  }
+
+  getClientMessageByID(id: string) {
+    const docRef = doc(this.firestore, 'client_message', id);
+    return getDoc(docRef);
+  }
+
+  addReplyMessage(replayMessage: adminReply): Promise<DocumentReference> {
+    return addDoc(
+      collection(this.firestore, 'reply_message_admin'),
+      replayMessage
+    );
+  }
+
+  getClientMessages() {
+    const q = query(collection(this.firestore, 'client_message'));
+    this.clientMessages$ = collectionData(q, { idField: 'id' }) as Observable<
+      ClietnMessage[]
+    >;
   }
 
   getEventByID(id: string) {

@@ -1,15 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Tab 4 </ion-title>
+    <ion-title> Messages </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 4</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 4 page"></app-explore-container>
+  <ion-card
+    *ngFor="let message of userManagementService.clientMessages$ | async"
+  >
+    <ion-card-title>{{ message.clientName }}</ion-card-title>
+    <ion-card-header>Send By : {{ message.headline }}</ion-card-header>
+    <ion-card-content>{{message.message}}</ion-card-content>
+    <ion-button (click)="reply(message)">Reply</ion-button>
+  </ion-card>
 </ion-content>
