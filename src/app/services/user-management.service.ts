@@ -136,6 +136,15 @@ export class UserManagementService {
     this.getEvents();
   }
 
+  getGuestByID(id: string) {
+    const docRef = doc(this.firestore, 'users', id);
+    return getDoc(docRef);
+  }
+
+  getEventByID(id: string) {
+    const docRef = doc(this.firestore, 'events', id);
+    return getDoc(docRef);
+  }
   getEvents() {
     const q = query(collection(this.firestore, 'events'));
     this.events$ = collectionData(q, { idField: 'id' }) as Observable<event[]>;

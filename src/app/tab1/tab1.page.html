@@ -5,7 +5,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card *ngFor="let event of userManagementService.events$ | async">
+  <ion-card
+    *ngFor="let event of userManagementService.events$ | async"
+    (click)="viewEvent(event)"
+  >
     <ion-card-header>{{event.name}}</ion-card-header>
     <ion-card-content>
       <ion-grid>

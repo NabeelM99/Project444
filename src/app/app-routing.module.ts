@@ -52,6 +52,13 @@ const routes: Routes = [
         (m) => m.ViewHallHistoryPageModule
       ),
   },
+  {
+    path: 'view-event/:id',
+    loadChildren: () =>
+      import('./pages/view-event/view-event.module').then(
+        (m) => m.ViewEventPageModule
+      ),
+  },
 ];
 @NgModule({
   imports: [

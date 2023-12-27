@@ -39,4 +39,8 @@ export class Tab1Page {
       await alert.present();
     }
   }
+
+  viewEvent(event: any) {
+    this.navController.navigateForward('/view-event/' + event.id);
+  }
 }
