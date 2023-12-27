@@ -61,7 +61,11 @@ export class LoginPage {
                   {
                     text: 'OK',
                     handler: () => {
-                      this.navController.navigateForward('/home');
+                      this.userManagementService
+                        .getUserIDAndType(docRef.id)
+                        .then(() => {
+                          this.navController.navigateForward('/tabs/tab6');
+                        });
                     },
                   },
                 ],

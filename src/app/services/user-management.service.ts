@@ -337,44 +337,6 @@ export class UserManagementService {
     return addDoc(this.usersReferance, client);
   }
 
-  async loginClient(
-    username: string,
-    password: string
-  ): Promise<QuerySnapshot<DocumentData, DocumentData> | null> {
-    const queryClient = query(
-      this.usersReferance,
-      where('user_type', '==', 'client'),
-      where('username', '==', username),
-      where('password', '==', password)
-    );
-    const result = await getDocs(queryClient);
-
-    if (result.empty) {
-      return null;
-    } else {
-      return result;
-    }
-  }
-
-  async loginGuest(
-    username: string,
-    password: string
-  ): Promise<QuerySnapshot<DocumentData, DocumentData> | null> {
-    const queryGuest = query(
-      this.usersReferance,
-      where('user_type', '==', 'guest'),
-      where('username', '==', username),
-      where('password', '==', password)
-    );
-    const result = await getDocs(queryGuest);
-
-    if (result.empty) {
-      return null;
-    } else {
-      return result;
-    }
-  }
-
   async loginAdmin(
     username: string,
     password: string
@@ -390,6 +352,44 @@ export class UserManagementService {
       return null;
     } else {
       return user.docs[0].ref;
+    }
+  }
+
+  async loginClient(
+    username: string,
+    password: string
+  ): Promise<DocumentReference<DocumentData, DocumentData> | null> {
+    const queryClient = query(
+      this.usersReferance,
+      where('user_type', '==', 'client'),
+      where('username', '==', username),
+      where('password', '==', password)
+    );
+    const result = await getDocs(queryClient);
+
+    if (result.empty) {
+      return null;
+    } else {
+      return result.docs[0].ref;
+    }
+  }
+
+  async loginGuest(
+    username: string,
+    password: string
+  ): Promise<DocumentReference<DocumentData, DocumentData> | null> {
+    const queryGuest = query(
+      this.usersReferance,
+      where('user_type', '==', 'guest'),
+      where('username', '==', username),
+      where('password', '==', password)
+    );
+    const result = await getDocs(queryGuest);
+
+    if (result.empty) {
+      return null;
+    } else {
+      return result.docs[0].ref;
     }
   }
 
