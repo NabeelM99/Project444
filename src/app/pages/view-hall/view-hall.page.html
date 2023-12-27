@@ -1,0 +1,77 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>view - hall</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <h1>{{ hall.name }}</h1>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="1"
+          ><ion-icon name="location-outline"></ion-icon
+        ></ion-col>
+        <ion-col size="8">{{ hall.location }}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="1"><ion-icon name="golf-outline"></ion-icon></ion-col>
+        <ion-col size="8">{{ hall.hall_number }}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <img [src]="hall.image" style="width: auto" alt="" />
+  <div class="container mt-3">
+    <p>{{ hall.description }}</p>
+
+    <ion-card>
+      <ion-card-header> Details about {{ hall.name }} </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>Contact</ion-label>
+            <ion-label>{{ hall.email }}</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>Phone</ion-label>
+            <ion-label>{{ hall.phone }}</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>SQM(M^2)</ion-label>
+            <ion-label>{{ hall.size }}</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>Capacity</ion-label>
+            <ion-label>{{ hall.capacity }}</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>Number of Booths</ion-label>
+            <ion-label>{{ hall.noOfBoth }}</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>Pricing</ion-label>
+            <ion-label>{{ hall.price }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col offset="2"
+          ><ion-button (click)="deleteHall()">Delete</ion-button></ion-col
+        >
+        <ion-col
+          ><ion-button (click)="updateHall()">Update</ion-button></ion-col
+        >
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button (click)="viewHistory()" expand="block"
+            >History</ion-button
+          >
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

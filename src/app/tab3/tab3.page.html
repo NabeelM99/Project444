@@ -9,6 +9,7 @@
     <ion-card
       color="medium"
       *ngFor="let hall of userManagementService.halls$ | async"
+      (click)="viewHall(hall)"
     >
       <ion-card-header>
         <ion-card-title>{{hall.name}}</ion-card-title>

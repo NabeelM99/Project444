@@ -7,6 +7,7 @@ import {
   QuerySnapshot,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -82,6 +83,36 @@ export interface Hall {
   hall_number: string;
 }
 
+export interface reservation {
+  clientID: string;
+  start_date: string;
+  end_date: string;
+  eventID: string;
+  hallID: string;
+  start_time: string;
+  end_time: string;
+  total: number;
+  clientName: string;
+  eventName: string;
+}
+
+export interface event {
+  name: string;
+  agenda: string[];
+  attendance: string[];
+  description: string;
+  start_date: string;
+  end_date: string;
+  start_time: string;
+  end_time: string;
+  speakers: string[];
+  reservationID: string;
+  floor_plan: string;
+  eventOrder: string[];
+  requests: string[];
+  hallName: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -93,7 +124,7 @@ export class UserManagementService {
   clients$!: Observable<Client[]>;
   guests$!: Observable<Guest[]>;
   admins$!: Observable<Admin[]>;
-
+  events$!: Observable<event[]>;
   userID: string = '';
 
   constructor(public firestore: Firestore) {
@@ -102,11 +133,40 @@ export class UserManagementService {
     this.getClients();
     this.getClientsRequestsPending();
     this.getHalls();
+    this.getEvents();
   }
 
+  getEvents() {
+    const q = query(collection(this.firestore, 'events'));
+    this.events$ = collectionData(q, { idField: 'id' }) as Observable<event[]>;
+  }
+
+  getReservationByID(id: string) {
+    const docRef = doc(this.firestore, 'hall_reservation', id);
+    return getDoc(docRef);
+  }
+
+  getHallHistory(id: string) {
+    const docRef = doc(this.firestore, 'Hall', id);
+    return getDoc(docRef);
+  }
+  updateHall(id: string, data: any) {
+    const docRef = doc(this.firestore, 'Hall', id);
+    return updateDoc(docRef, data);
+  }
+
+  deleteHall(id: string) {
+    const docRef = doc(this.firestore, 'Hall', id);
+    return deleteDoc(docRef);
+  }
   getHalls() {
     const q = query(collection(this.firestore, 'Hall'));
     this.halls$ = collectionData(q, { idField: 'id' }) as Observable<Hall[]>;
+  }
+
+  getHall(id: string) {
+    const docRef = doc(this.firestore, 'Hall', id);
+    return getDoc(docRef);
   }
 
   createHall(hall: Hall): Promise<DocumentReference> {

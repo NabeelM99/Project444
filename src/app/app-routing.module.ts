@@ -23,11 +23,35 @@ const routes: Routes = [
       import('./pages/password-validator/password-validator.module').then(
         (m) => m.PasswordValidatorPageModule
       ),
-  },  {
-    path: 'create-hall',
-    loadChildren: () => import('./pages/create-hall/create-hall.module').then( m => m.CreateHallPageModule)
   },
-
+  {
+    path: 'create-hall',
+    loadChildren: () =>
+      import('./pages/create-hall/create-hall.module').then(
+        (m) => m.CreateHallPageModule
+      ),
+  },
+  {
+    path: 'view-hall/:id',
+    loadChildren: () =>
+      import('./pages/view-hall/view-hall.module').then(
+        (m) => m.ViewHallPageModule
+      ),
+  },
+  {
+    path: 'update-hall/:id',
+    loadChildren: () =>
+      import('./pages/update-hall/update-hall.module').then(
+        (m) => m.UpdateHallPageModule
+      ),
+  },
+  {
+    path: 'view-hall-history/:id',
+    loadChildren: () =>
+      import('./pages/view-hall-history/view-hall-history.module').then(
+        (m) => m.ViewHallHistoryPageModule
+      ),
+  },
 ];
 @NgModule({
   imports: [

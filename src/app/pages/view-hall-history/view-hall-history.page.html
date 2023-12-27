@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>view-hall-history</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card *ngFor="let res of reservations" class="p-3">
+    <ion-card-title>Rserved By: {{res.clientName}}</ion-card-title>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="1">
+            <ion-icon name="calendar-number-outline"></ion-icon>
+          </ion-col>
+          <ion-col size="8"> {{res.start_date}} - {{res.end_date}} </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="1"
+            ><ion-icon name="sparkles-outline"></ion-icon
+          ></ion-col>
+          <ion-col size="8">{{res.eventName}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="1">
+            <ion-icon name="sparkles-outline"></ion-icon>
+          </ion-col>
+          <ion-col size="8">{{res.start_time}} - {{res.end_time}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

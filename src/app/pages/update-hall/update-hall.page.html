@@ -1,0 +1,183 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>update-hall</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <form [formGroup]="formUpdate" (ngSubmit)="UpdateHall(formUpdate.value)">
+      <!-- Hall Name -->
+      <ion-label for="hall-name" class="form-label">Hall Name:</ion-label>
+      <ion-input
+        formControlName="name"
+        id="hall-name"
+        class="form-control"
+        placeholder="Enter hall name"
+        [class.is-invalid]="formUpdate.controls['name'].invalid && formUpdate.controls['name'].touched"
+      ></ion-input>
+      <div
+        *ngIf="formUpdate.controls['name'].invalid && formUpdate.controls['name'].touched"
+        class="invalid-feedback"
+      >
+        <div *ngIf="formUpdate.controls['name'].hasError('required')">
+          Hall name is required.
+        </div>
+        <div *ngIf="formUpdate.controls['name'].hasError('pattern')">
+          Hall name must contain only letters, spaces, and hyphens.
+        </div>
+      </div>
+
+      <!-- Location -->
+      <ion-label for="location" class="form-label">Location:</ion-label>
+      <ion-input
+        formControlName="location"
+        id="location"
+        class="form-control"
+        placeholder="Enter location"
+        [class.is-invalid]="formUpdate.controls['location'].invalid && formUpdate.controls['location'].touched"
+      ></ion-input>
+      <div
+        *ngIf="formUpdate.controls['location'].invalid && formUpdate.controls['location'].touched"
+        class="invalid-feedback"
+      >
+        <div *ngIf="formUpdate.controls['location'].hasError('required')">
+          Location is required.
+        </div>
+      </div>
+
+      <!-- Email -->
+      <ion-label for="email" class="form-label">Email:</ion-label>
+      <ion-input
+        formControlName="email"
+        id="email"
+        class="form-control"
+        placeholder="Enter email contact"
+        [class.is-invalid]="formUpdate.controls['email'].invalid && formUpdate.controls['email'].touched"
+      ></ion-input>
+      <div
+        *ngIf="formUpdate.controls['email'].invalid && formUpdate.controls['email'].touched"
+        class="invalid-feedback"
+      >
+        <div *ngIf="formUpdate.controls['email'].hasError('required')">
+          Email is required.
+        </div>
+        <div *ngIf="formUpdate.controls['email'].hasError('email')">
+          Invalid email format.
+        </div>
+      </div>
+      <!-- Phone Number -->
+      <ion-label for="phone" class="form-label">Phone Number:</ion-label>
+      <ion-input
+        formControlName="phone"
+        id="phone"
+        class="form-control"
+        placeholder="Enter phone contact"
+        [class.is-invalid]="formUpdate.controls['phone'].invalid && formUpdate.controls['phone'].touched"
+      ></ion-input>
+      <div
+        *ngIf="formUpdate.controls['phone'].invalid && formUpdate.controls['phone'].touched"
+        class="invalid-feedback"
+      >
+        <div *ngIf="formUpdate.controls['phone'].hasError('required')">
+          Phone number is required.
+        </div>
+        <div *ngIf="formUpdate.controls['phone'].hasError('pattern')">
+          Invalid phone number format (should be 8 digits).
+        </div>
+      </div>
+
+      <!-- Description -->
+      <ion-label for="description" class="form-label">Description:</ion-label>
+      <ion-input
+        formControlName="description"
+        id="description"
+        class="form-control"
+        placeholder="Enter hall description"
+        [class.is-invalid]="formUpdate.controls['description'].invalid && formUpdate.controls['description'].touched"
+      ></ion-input>
+      <div
+        *ngIf="formUpdate.controls['description'].invalid && formUpdate.controls['description'].touched"
+        class="invalid-feedback"
+      ></div>
+
+      <!-- Capacity -->
+      <ion-label for="capacity" class="form-label">Capacity:</ion-label>
+      <ion-input
+        formControlName="capacity"
+        id="capacity"
+        class="form-control"
+        placeholder="Enter hall capacity"
+        [class.is-invalid]="formUpdate.controls['capacity'].invalid && formUpdate.controls['capacity'].touched"
+      ></ion-input>
+      <div
+        *ngIf="formUpdate.controls['capacity'].invalid && formUpdate.controls['capacity'].touched"
+        class="invalid-feedback"
+      >
+        <div *ngIf="formUpdate.controls['capacity'].hasError('required')">
+          Capacity is required.
+        </div>
+        <div *ngIf="formUpdate.controls['capacity'].hasError('pattern')">
+          Invalid capacity format (should be in the form '4000 - 6000').
+        </div>
+      </div>
+      <!-- Size -->
+      <ion-label for="size" class="form-label">Size:</ion-label>
+      <ion-input
+        formControlName="size"
+        id="size"
+        class="form-control"
+        placeholder="Enter hall size"
+        [class.is-invalid]="formUpdate.controls['size'].invalid && formUpdate.controls['size'].touched"
+      ></ion-input>
+      <div
+        *ngIf="formUpdate.controls['size'].invalid && formUpdate.controls['size'].touched"
+        class="invalid-feedback"
+      >
+        <div *ngIf="formUpdate.controls['size'].hasError('pattern')">
+          Invalid size format (should be in the form '300x500').
+        </div>
+      </div>
+
+      <!-- Hall Image -->
+      <ion-label for="image" class="form-label">Hall Image:</ion-label>
+      <ion-input
+        formControlName="image"
+        id="image"
+        class="form-control"
+        placeholder="Enter hall image"
+        [class.is-invalid]="formUpdate.controls['image'].invalid && formUpdate.controls['image'].touched"
+      ></ion-input>
+      <div
+        *ngIf="formUpdate.controls['image'].invalid && formUpdate.controls['image'].touched"
+        class="invalid-feedback"
+      ></div>
+
+      <!-- Number of Booth Fitting -->
+      <ion-label for="number-booth" class="form-label"
+        >Number of Booth Fitting:</ion-label
+      >
+      <ion-input
+        formControlName="noOfBoth"
+        id="number-booth"
+        class="form-control"
+        placeholder="Enter number of booth"
+        [class.is-invalid]="formUpdate.controls['noOfBoth'].invalid && formUpdate.controls['noOfBoth'].touched"
+      ></ion-input>
+      <div
+        *ngIf="formUpdate.controls['noOfBoth'].invalid && formUpdate.controls['noOfBoth'].touched"
+        class="invalid-feedback"
+      >
+        <div *ngIf="formUpdate.controls['noOfBoth'].hasError('required')">
+          Number of booth is required.
+        </div>
+        <div *ngIf="formUpdate.controls['noOfBoth'].hasError('pattern')">
+          Invalid number of booth format (should be in the form '20 - 40').
+        </div>
+      </div>
+      <ion-button expand="block" [disabled]="!formUpdate.valid" type="submit"
+        >Update</ion-button
+      >
+    </form>
+  </div></ion-content
+>

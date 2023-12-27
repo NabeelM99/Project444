@@ -96,10 +96,9 @@ export class CreateHallPage {
   }
 
   CreateHall(value: any) {
-    // Fill the 'hall' variable with data from the form
     this.hall.name = value.name;
     this.hall.capacity = value.capacity;
-    this.hall.price = +value.price; // Convert to number
+    this.hall.price = +value.price;
     this.hall.description = value.description;
     this.hall.location = value.location;
     this.hall.image = value.image;
@@ -109,7 +108,6 @@ export class CreateHallPage {
     this.hall.size = value.size;
     this.hall.hall_number = value.hall_number;
 
-    // Call the service method to create the hall
     this.userManagementService.createHall(this.hall).then((docRef) => {
       this.alertController
         .create({

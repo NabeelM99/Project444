@@ -40,4 +40,8 @@ export class Tab3Page {
   createHall() {
     this.navController.navigateForward('/create-hall');
   }
+
+  viewHall(hall: any) {
+    this.navController.navigateForward('/view-hall/' + hall.id);
+  }
 }
