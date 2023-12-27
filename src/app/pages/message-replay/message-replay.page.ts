@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { IonProgressBar, NavController } from '@ionic/angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NavController } from '@ionic/angular';
 import { UserManagementService } from 'src/app/services/user-management.service';
-import { AlertController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -13,13 +13,28 @@ export class MessageReplayPage implements OnInit {
   messageID!: string;
   clientName: string = '';
   headLine: string = '';
+
+  // Create the form group
+  replyForm: FormGroup;
+
   constructor(
     public route: ActivatedRoute,
     public userManagementService: UserManagementService,
-    public alertCtrl: AlertController,
-    public navController: NavController
+    public navController: NavController,
+    private fb: FormBuilder
   ) {
     this.messageID = this.route.snapshot.paramMap.get('id') as string;
+
+    this.replyForm = this.fb.group({
+      message: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(255),
+          this.noSpecialCharsValidator,
+        ],
+      ],
+    });
   }
 
   ngOnInit(): void {
@@ -31,5 +46,17 @@ export class MessageReplayPage implements OnInit {
           this.headLine = message.data()['headline'];
         }
       });
+  }
+
+  noSpecialCharsValidator(control: any) {
+    const specialChars = /[!@#$%^&*(),.?":{}|<>]/;
+    if (specialChars.test(control.value)) {
+      return { specialChars: true };
+    }
+    return null;
+  }
+
+  sendReply() {
+    // Add your logic to send the reply
   }
 }
