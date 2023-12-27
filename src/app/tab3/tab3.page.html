@@ -1,17 +1,49 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    <ion-title> Hall </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <div class="contaier p-3">
+    <ion-card
+      color="medium"
+      *ngFor="let hall of userManagementService.halls$ | async"
+    >
+      <ion-card-header>
+        <ion-card-title>{{hall.name}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row
+            ><ion-col size="2">
+              <ion-icon name="location-outline"></ion-icon>
+            </ion-col>
+            <ion-col> {{hall.location}}</ion-col></ion-row
+          >
+          <ion-row>
+            <ion-col size="2"
+              ><ion-icon name="expand-outline"></ion-icon
+            ></ion-col>
+            <ion-col>{{hall.size}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2">
+              <ion-icon name="call-outline"></ion-icon>
+            </ion-col>
+            <ion-col>{{hall.email}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="2">
+              <ion-icon name="people-outline"></ion-icon>
+            </ion-col>
+            <ion-col> {{hall.capacity}} </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+    <ion-button expand="full" (click)="createHall()" color="medium"
+      >Create</ion-button
+    >
+  </div>
 </ion-content>

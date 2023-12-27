@@ -11,6 +11,7 @@ import {
   getDoc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 
@@ -51,23 +52,83 @@ export interface Admin {
   user_type: string;
 }
 
+export interface request {
+  id: string;
+  clientID: string;
+  end_date: Date;
+  start_date: Date;
+  hallName: string;
+  hallID: string;
+  status: string;
+  user_type: string;
+  clientName: string;
+  time: string;
+}
+
+export interface Hall {
+  id: string;
+  name: string;
+  capacity: number;
+  price: number;
+  description: string;
+  location: string;
+  image: string;
+  available: boolean;
+  email: string;
+  noOfBoth: string;
+  phone: string;
+  resrvation_history: string[];
+  size: string;
+  hall_number: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class UserManagementService {
+  halls$!: Observable<Hall[]>;
   usersReferance: CollectionReference = collection(this.firestore, 'users');
-
+  clientPending$!: Observable<request[]>;
   users$!: Observable<[Guest, Client, Admin]>;
   clients$!: Observable<Client[]>;
   guests$!: Observable<Guest[]>;
   admins$!: Observable<Admin[]>;
 
-  userID!: string;
+  userID: string = '';
 
   constructor(public firestore: Firestore) {
     this.getAdmins();
     this.getGuests();
     this.getClients();
+    this.getClientsRequestsPending();
+    this.getHalls();
+  }
+
+  getHalls() {
+    const q = query(collection(this.firestore, 'Hall'));
+    this.halls$ = collectionData(q, { idField: 'id' }) as Observable<Hall[]>;
+  }
+
+  getClientsRequestsPending() {
+    const q = query(
+      collection(this.firestore, 'request'),
+      where('status', '==', 'pending'),
+      where('user_type', '==', 'client')
+    );
+
+    try {
+      this.clientPending$ = collectionData(q, {
+        idField: 'id',
+      }) as Observable<request[]>;
+    } catch (error) {
+      console.error('Error fetching pending requests:', error);
+      // Handle the error as appropriate for your application
+    }
+  }
+
+  updateRequest(id: string, data: any) {
+    const requestDoc = doc(this.firestore, 'request', id);
+    return updateDoc(requestDoc, data);
   }
 
   getAdmins() {
