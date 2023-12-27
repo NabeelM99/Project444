@@ -8,7 +8,7 @@
   <div class="container">
     <h2>Reply Message for: {{ clientName }}</h2>
     <h5>Headline: {{ headLine }}</h5>
-    <form [formGroup]="replyForm" (ngSubmit)="sendReply()">
+    <form [formGroup]="replyForm" (ngSubmit)="sendReply(replyForm.value)">
       <ion-label class="form-label">Message:</ion-label>
       <ion-textarea
         formControlName="message"

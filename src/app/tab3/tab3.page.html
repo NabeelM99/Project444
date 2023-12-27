@@ -5,14 +5,16 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="contaier p-3">
+  <div class="container p-3">
+    <ion-searchbar (ionChange)="updateSearch($event)"></ion-searchbar>
+
     <ion-card
+      *ngFor="let hall of filteredHalls"
       color="medium"
-      *ngFor="let hall of userManagementService.halls$ | async"
       (click)="viewHall(hall)"
     >
       <ion-card-header>
-        <ion-card-title>{{hall.name}}</ion-card-title>
+        <ion-card-title>{{ hall.name }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-grid>
@@ -43,8 +45,9 @@
         </ion-grid>
       </ion-card-content>
     </ion-card>
-    <ion-button expand="full" (click)="createHall()" color="medium"
-      >Create</ion-button
-    >
+
+    <ion-button expand="full" (click)="createHall()" color="medium">
+      Create
+    </ion-button>
   </div>
 </ion-content>

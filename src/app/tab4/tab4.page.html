@@ -13,4 +13,10 @@
     <ion-card-content>{{message.message}}</ion-card-content>
     <ion-button (click)="reply(message)">Reply</ion-button>
   </ion-card>
+  <div
+    class="container p-3"
+    *ngIf="userManagementService.clientMessages$ | async"
+  >
+    There are No new messages, all message have been replyed
+  </div>
 </ion-content>

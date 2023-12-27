@@ -120,6 +120,7 @@ export interface ClietnMessage {
   clientName: string;
   message: string;
   headline: string;
+  reply: boolean;
 }
 
 export interface adminReply {
@@ -172,7 +173,10 @@ export class UserManagementService {
   }
 
   getClientMessages() {
-    const q = query(collection(this.firestore, 'client_message'));
+    const q = query(
+      collection(this.firestore, 'client_message'),
+      where('reply', '==', false)
+    );
     this.clientMessages$ = collectionData(q, { idField: 'id' }) as Observable<
       ClietnMessage[]
     >;

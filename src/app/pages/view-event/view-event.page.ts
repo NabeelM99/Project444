@@ -6,6 +6,8 @@ import {
   Guest,
 } from 'src/app/services/user-management.service';
 
+import { NavController } from '@ionic/angular';
+
 @Component({
   selector: 'app-view-event',
   templateUrl: './view-event.page.html',
@@ -33,6 +35,7 @@ export class ViewEventPage implements OnInit {
   attendance: string[] = []; // Initialize the array here
   constructor(
     public route: ActivatedRoute,
+    public navController: NavController,
     public userManagementService: UserManagementService
   ) {
     this.eventID = this.route.snapshot.paramMap.get('id') as string;
@@ -49,5 +52,9 @@ export class ViewEventPage implements OnInit {
         });
       });
     });
+  }
+
+  goBack() {
+    this.navController.navigateBack('/');
   }
 }

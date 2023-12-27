@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { AlertButton, AlertController, NavController } from '@ionic/angular';
 import { UserManagementService } from 'src/app/services/user-management.service';
 import { ActivatedRoute } from '@angular/router';
-
+import { adminReply } from 'src/app/services/user-management.service';
 @Component({
   selector: 'app-message-replay',
   templateUrl: './message-replay.page.html',
@@ -12,7 +12,10 @@ import { ActivatedRoute } from '@angular/router';
 export class MessageReplayPage implements OnInit {
   messageID!: string;
   clientName: string = '';
+  clientID!: string;
   headLine: string = '';
+  replyMessageText!: string;
+  replayMessageObject!: adminReply;
 
   // Create the form group
   replyForm: FormGroup;
@@ -21,7 +24,8 @@ export class MessageReplayPage implements OnInit {
     public route: ActivatedRoute,
     public userManagementService: UserManagementService,
     public navController: NavController,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public alertCtrl: AlertController
   ) {
     this.messageID = this.route.snapshot.paramMap.get('id') as string;
 
@@ -44,6 +48,7 @@ export class MessageReplayPage implements OnInit {
         if (message.exists()) {
           this.clientName = message.data()['ClientName'];
           this.headLine = message.data()['headline'];
+          this.clientID = message.data()['senderID'];
         }
       });
   }
@@ -56,7 +61,29 @@ export class MessageReplayPage implements OnInit {
     return null;
   }
 
-  sendReply() {
-    // Add your logic to send the reply
+  sendReply(value: any) {
+    console.log('WOKR');
+    this.replayMessageObject = {
+      clientID: this.clientID,
+      message_headline: this.headLine,
+      replay_message: value.message,
+      messageID: this.messageID,
+    };
+    this.userManagementService
+      .addReplyMessage(this.replayMessageObject)
+      .then(() => {
+        this.alertCtrl.create({
+          header: 'Success',
+          message: 'Message replayed successfully',
+          buttons: [
+            {
+              text: 'Ok',
+              handler: () => {
+                this.navController.navigateForward('/tabs/tab4');
+              },
+            },
+          ],
+        });
+      });
   }
 }
