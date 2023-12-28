@@ -172,6 +172,11 @@ export class UserManagementService {
     this.getClientMessages();
   }
 
+  getClientByID(id: string) {
+    const docRef = doc(this.firestore, 'users', id);
+    return getDoc(docRef);
+  }
+
   getReservationByDatesAndHallID(
     start_date: string,
     end_date: string,
@@ -465,6 +470,11 @@ export class UserManagementService {
     const client = doc(this.firestore, 'users', id);
     const data = await getDoc(client);
     return data.data() as Client;
+  }
+
+  updateClientByID(id: string, data: any) {
+    const docRef = doc(this.firestore, 'users', id);
+    return updateDoc(docRef, data);
   }
 
   async getGuest(id: string) {

@@ -5,6 +5,7 @@ import {
 } from '../services/user-management.service';
 import { AlertController, NavController } from '@ionic/angular';
 import { computeStackId } from '@ionic/angular/common/directives/navigation/stack-utils';
+import { arrayRemove, arrayUnion } from 'firebase/firestore';
 
 @Component({
   selector: 'app-tab2',
@@ -56,43 +57,55 @@ export class Tab2Page {
     this.admin = await this.userManagementService.getAdmin(this.userID);
   }
 
-  approveRequest(request: any) {
+  approveRequest(requestData: any) {
+    // we want to access to the client and add the request into approve requests
+
     this.userManagementService
-      .updateRequest(request.id, {
+      .updateRequest(requestData.id, {
         status: 'approve',
       })
-      .then(() => {
-        this.alertController
-          .create({
-            header: 'Success',
-            message: 'Request approved successfully',
-            buttons: [
-              {
-                text: 'OK',
-              },
-            ],
-          })
-          .then((alert) => {
-            alert.present();
-          });
+      .then(async () => {
+        this.userManagementService.updateClientByID(requestData.clientID, {
+          approve_request: arrayUnion(requestData.id),
+          pending_requests: arrayRemove(requestData.id),
+        });
+
+        const alert = await this.alertController.create({
+          header: 'Success',
+          message: 'Request approved successfully',
+          buttons: [
+            {
+              text: 'OK',
+            },
+          ],
+        });
+
+        await alert.present();
       });
   }
 
   rejectRequest(request: any) {
+    // we want to accesss to the client and add the request into reject requests
     this.userManagementService
       .updateRequest(request.id, {
         status: 'reject',
       })
-      .then(() => {
-        this.alertController
-          .create({
-            header: 'Success',
-            message: 'Request rejected successfully',
-            buttons: ['ok'],
-          })
-          .then((alert) => {
-            alert.present();
-          });
+      .then(async () => {
+        this.userManagementService.updateClientByID(request.clientID, {
+          reject_request: arrayUnion(request.id),
+          pending_requests: arrayRemove(request.id),
+        });
+
+        const alert = await this.alertController.create({
+          header: 'Success',
+          message: 'Request rejected successfully',
+          buttons: [
+            {
+              text: 'OK',
+            },
+          ],
+        });
+        await alert.present();
       });
   }
 }

@@ -99,9 +99,7 @@ export class Tab6Page {
           console.log(request);
           const data = await request.data();
           if (data) {
-            if (data['status'] === 'pending') {
-              this.pendingRequests.push(data as request);
-            }
+            this.pendingRequests.push(data as request);
           }
           console.log(this.pendingRequests);
         });
@@ -149,11 +147,13 @@ export class Tab6Page {
                       const requestData = request.data();
                       if (requestData) {
                         // Include the request ID along with the data
-                        this.eventRequsts.push({
-                          id: requestId,
-                          ...requestData,
-                        } as guestRequest);
-                        console.log('event Requests: ', this.eventRequsts);
+                        if (requestData['status'] === 'pending') {
+                          this.eventRequsts.push({
+                            id: requestId,
+                            ...requestData,
+                          } as guestRequest);
+                          console.log('event Requests: ', this.eventRequsts);
+                        }
                       }
                     });
                 }
@@ -165,27 +165,28 @@ export class Tab6Page {
   }
 
   //create event logic must be added
-  createEvent(approveRequest: request) {
+  async createEvent(approveRequest: request) {
     // hall price per day
     // crate new resrvation with information get it from create event
     // send resrvation id to the new page then in this page create event information and asign it to this reservation
-    this.userManagementService
-      .getReservationByDatesAndHallID(
+    const isReserved =
+      await this.userManagementService.getReservationByDatesAndHallID(
         approveRequest.start_date,
         approveRequest.end_date,
         approveRequest.hallID,
         this.clientID
-      )
-      .then((existingReservations) => {
-        if (!existingReservations.empty) {
-          this.alertController.create({
-            header: 'Error',
-            message: 'You have already reserved this hall',
-            buttons: ['OK'],
-          });
-          return;
-        }
+      );
+
+    if (isReserved.size > 0) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'This hall is already reserved',
+        buttons: ['OK'],
       });
+      await alert.present();
+      return;
+    }
+
     this.userManagementService
       .getHallByID(approveRequest.hallID)
       .then((hall) => {
@@ -235,6 +236,16 @@ export class Tab6Page {
             requests: arrayRemove(approveRequest.guestID),
           });
 
+          this.alertController
+            .create({
+              header: 'Success',
+              message: 'Request approved successfully',
+              buttons: ['OK'],
+            })
+            .then((alert) => {
+              alert.present();
+            });
+
           // Remove the approved request from the eventRequsts array
           const index = this.eventRequsts.findIndex(
             (r) => r.id === approveRequest.id
@@ -253,6 +264,24 @@ export class Tab6Page {
         this.userManagementService.updateEventByID(rejectRequest.eventID, {
           requests: arrayRemove(rejectRequest.guestID),
         });
+
+        this.alertController
+          .create({
+            header: 'Success',
+            message: 'Request rejected successfully',
+            buttons: ['OK'],
+          })
+          .then((alert) => {
+            this.alertController
+              .create({
+                header: 'Success',
+                message: 'Request approved successfully',
+                buttons: ['OK'],
+              })
+              .then((alert) => {
+                alert.present();
+              });
+          });
 
         // Remove the rejected request from the eventRequsts array
         const index = this.eventRequsts.findIndex(
