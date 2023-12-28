@@ -271,7 +271,7 @@ export class Tab6Page {
             message: 'Request rejected successfully',
             buttons: ['OK'],
           })
-          .then((alert) => {
+          .then(() => {
             this.alertController
               .create({
                 header: 'Success',

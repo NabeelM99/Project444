@@ -120,7 +120,7 @@ export interface event {
   end_date: string;
   start_time: string;
   end_time: string;
-  speakers: string[];
+  speakers: string;
   reservationID: string;
   floor_plan: string;
   eventOrder: string[];
@@ -172,6 +172,14 @@ export class UserManagementService {
     this.getClientMessages();
   }
 
+  addEvent(event: event): Promise<DocumentReference<DocumentData>> {
+    return addDoc(collection(this.firestore, 'events'), event);
+  }
+
+  updateReservationByID(id: string, reservation: any) {
+    const docRef = doc(this.firestore, 'hall_reservation', id);
+    return updateDoc(docRef, reservation);
+  }
   getClientByID(id: string) {
     const docRef = doc(this.firestore, 'users', id);
     return getDoc(docRef);

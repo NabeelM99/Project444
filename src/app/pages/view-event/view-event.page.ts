@@ -24,7 +24,7 @@ export class ViewEventPage implements OnInit {
     end_date: '',
     start_time: '',
     end_time: '',
-    speakers: [],
+    speakers: '',
     reservationID: '',
     floor_plan: '',
     eventOrder: [],

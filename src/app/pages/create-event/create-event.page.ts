@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { AlertController, NavController } from '@ionic/angular';
 import {
   UserManagementService,
+  event,
   reservation,
 } from 'src/app/services/user-management.service';
 
@@ -12,7 +14,7 @@ import {
   styleUrls: ['./create-event.page.scss'],
 })
 export class CreateEventPage implements OnInit {
-  reservationID!: string;
+  resID: string = '';
   reservation: reservation = {
     id: '',
     clientID: '',
@@ -27,12 +29,34 @@ export class CreateEventPage implements OnInit {
     eventName: '',
   };
 
+  newEvent: event = {
+    id: '',
+    name: '',
+    agenda: '',
+    attendance: [],
+    description: '',
+    start_date: '',
+    end_date: '',
+    start_time: '',
+    end_time: '',
+    speakers: '',
+    reservationID: '',
+    floor_plan: '',
+    eventOrder: [],
+    requests: [],
+    hallName: '',
+  };
+
+  hallName!: string;
+
   eventForm!: FormGroup;
 
   constructor(
     public formBuilder: FormBuilder,
     public route: ActivatedRoute,
-    public userManagmentService: UserManagementService
+    public userManagmentService: UserManagementService,
+    public navController: NavController,
+    public alertController: AlertController
   ) {
     this.eventForm = this.formBuilder.group({
       name: [
@@ -77,18 +101,75 @@ export class CreateEventPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.reservationID = this.route.snapshot.paramMap.get('id') as string;
+    this.reservation.id = this.route.snapshot.paramMap.get('id') as string;
     this.userManagmentService
-      .getReservationByID(this.reservationID)
+      .getReservationByID(this.reservation.id)
       .then((reservation) => {
         if (reservation.exists()) {
           this.reservation = reservation.data() as reservation;
-          console.log(this.reservation);
+          this.resID = reservation.id;
+          this.userManagmentService
+            .getHallByID(this.reservation.hallID)
+            .then((hall) => {
+              if (hall.exists()) {
+                this.hallName = hall.data()['name'];
+              }
+            });
         }
       });
   }
 
-  createEvent(value: any) {
-    // Implement your logic for creating an event here
+  createEvent(formCreate: any) {
+    // full event object with necessary files
+    this.newEvent = {
+      name: formCreate.name,
+      agenda: formCreate.agenda,
+      attendance: [],
+      description: formCreate.description,
+      start_date: this.reservation.start_date,
+      end_date: this.reservation.end_date,
+      start_time: this.reservation.start_time,
+      end_time: this.reservation.end_time,
+      speakers: formCreate.speakers,
+      reservationID: this.resID,
+      floor_plan: formCreate.floorPlan,
+      eventOrder: [
+        'name',
+        'description',
+        'date-time',
+        'agenda',
+        'speakers',
+        'floor-plan',
+        'attendance',
+      ],
+      requests: [],
+      hallName: this.hallName,
+    };
+
+    this.userManagmentService.addEvent(this.newEvent).then((value) => {
+      this.userManagmentService
+        .updateReservationByID(this.resID, {
+          eventID: value.id,
+          eventName: formCreate.name,
+        })
+        .then(() => {
+          this.alertController
+            .create({
+              header: 'Success',
+              message: 'Event created successfully',
+              buttons: [
+                {
+                  text: 'OK',
+                  handler: () => {
+                    this.navController.navigateForward('/tabs/tab6');
+                  },
+                },
+              ],
+            })
+            .then((alert) => {
+              alert.present();
+            });
+        });
+    });
   }
 }

@@ -41,9 +41,9 @@
 
   <div class="container">
     <h2>Agenda</h2>
-    <ul>
-      <li *ngFor="let agenda of event.agenda">{{agenda}}</li>
-    </ul>
+    <p>{{ event.agenda }}</p>
+    <h2>Speakers</h2>
+    <p>{{ event.speakers }}</p>
   </div>
   <img [src]="event.floor_plan" style="width: auto" alt="" />
   <div class="container">
