@@ -1,13 +1,178 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>create-event</ion-title>
+    <ion-title>Create Event</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">create-event</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="container p-3">
+    <form
+      action=""
+      [formGroup]="eventForm"
+      (ngSubmit)="createEvent(eventForm.value)"
+    >
+      <ion-label for="name" class="form-label">Event Name:</ion-label>
+      <ion-input
+        id="name"
+        formControlName="name"
+        class="form-control"
+        placeholder="Enter event name"
+        type="text"
+        [class.is-invalid]="eventForm.controls['name'].invalid && eventForm.controls['name'].touched"
+      ></ion-input>
+      <div
+        *ngIf="eventForm.controls['name'].hasError('required') && eventForm.controls['name'].touched"
+        class="invalid-feedback"
+      >
+        Event Name is required.
+      </div>
+      <div
+        *ngIf="eventForm.controls['name'].hasError('pattern') && eventForm.controls['name'].touched"
+        class="invalid-feedback"
+      >
+        Event Name must contain only letters and spaces, with a length between 4
+        and 30 characters.
+      </div>
+
+      <ion-label for="description" class="form-label"
+        >Event Description:</ion-label
+      >
+      <ion-textarea
+        id="description"
+        placeholder="Enter event description"
+        class="form-control"
+        formControlName="description"
+        [class.is-invalid]="eventForm.controls['description'].invalid && eventForm.controls['description'].touched"
+      ></ion-textarea>
+      <div
+        *ngIf="eventForm.controls['description'].hasError('required') && eventForm.controls['description'].touched"
+        class="invalid-feedback"
+      >
+        Event Description is required.
+      </div>
+      <div
+        *ngIf="eventForm.controls['description'].hasError('maxlength') && eventForm.controls['description'].touched"
+        class="invalid-feedback"
+      >
+        Event Description must be at most 255 characters long.
+      </div>
+      <div
+        *ngIf="eventForm.controls['description'].hasError('pattern') && eventForm.controls['description'].touched"
+        class="invalid-feedback"
+      >
+        Event Description must contain only letters, numbers, spaces, and
+        special characters (- : , .).
+      </div>
+
+      <ion-label for="speakers" class="form-label">Speakers:</ion-label>
+      <ion-input
+        id="speakers"
+        formControlName="speakers"
+        placeholder="Enter speakers"
+        class="form-control"
+        [class.is-invalid]="eventForm.controls['speakers'].invalid && eventForm.controls['speakers'].touched"
+      ></ion-input>
+      <div
+        *ngIf="eventForm.controls['speakers'].hasError('required') && eventForm.controls['speakers'].touched"
+        class="invalid-feedback"
+      >
+        Speakers is required.
+      </div>
+      <div
+        *ngIf="eventForm.controls['speakers'].hasError('pattern') && eventForm.controls['speakers'].touched"
+        class="invalid-feedback"
+      >
+        Speakers must contain only letters, numbers, dots (.) and slashes (/).
+      </div>
+      <div
+        *ngIf="eventForm.controls['speakers'].hasError('minlength') && eventForm.controls['speakers'].touched"
+        class="invalid-feedback"
+      >
+        Speakers must be at least 7 characters long.
+      </div>
+      <div
+        *ngIf="eventForm.controls['speakers'].hasError('maxlength') && eventForm.controls['speakers'].touched"
+        class="invalid-feedback"
+      >
+        Speakers must not exceed 50 characters.
+      </div>
+
+      <ion-label for="floorPlan" class="form-label">Floor Plan Img:</ion-label>
+      <ion-input
+        id="floorPlan"
+        formControlName="floorPlan"
+        placeholder="Enter floor plan directory"
+        class="form-control"
+        [class.is-invalid]="eventForm.controls['floorPlan'].invalid && eventForm.controls['floorPlan'].touched"
+      ></ion-input>
+      <div
+        *ngIf="eventForm.controls['floorPlan'].hasError('required') && eventForm.controls['floorPlan'].touched"
+        class="invalid-feedback"
+      >
+        Floor Plan is required.
+      </div>
+      <div
+        *ngIf="eventForm.controls['floorPlan'].hasError('pattern') && eventForm.controls['floorPlan'].touched"
+        class="invalid-feedback"
+      >
+        Floor Plan must contain only letters, numbers, dots (.) and slashes (/).
+      </div>
+      <ion-label for="agenda" class="form-label">Agenda:</ion-label>
+      <ion-textarea
+        id="agenda"
+        class="form-control"
+        formControlName="agenda"
+        placeholder="Enter agenda"
+        [class.is-invalid]="eventForm.controls['agenda'].invalid && eventForm.controls['agenda'].touched"
+      ></ion-textarea>
+      <div
+        *ngIf="eventForm.controls['agenda'].hasError('required') && eventForm.controls['agenda'].touched"
+        class="invalid-feedback"
+      >
+        Agenda is required.
+      </div>
+      <div
+        *ngIf="eventForm.controls['agenda'].hasError('pattern') && eventForm.controls['agenda'].touched"
+        class="invalid-feedback"
+      >
+        Agenda must contain only letters, numbers, spaces, and special
+        characters (- : . ,).
+      </div>
+
+      <ion-grid>
+        <ion-row class="mt-3 mb-3">
+          <ion-col
+            ><div class="box">
+              <div>Start Date :</div>
+              <div>{{reservation.start_date}}</div>
+            </div></ion-col
+          >
+          <ion-col
+            ><div class="box">
+              <div>End Date:</div>
+              <div>{{reservation.end_date}}</div>
+            </div></ion-col
+          >
+        </ion-row>
+      </ion-grid>
+
+      <ion-list>
+        <ion-item>
+          <ion-label>Time</ion-label>
+          <ion-label
+            >{{reservation.start_time}} - {{reservation.end_time}}</ion-label
+          >
+        </ion-item>
+        <ion-item>
+          <ion-label>Total</ion-label>
+          <ion-label>{{reservation.total}}</ion-label>
+        </ion-item>
+      </ion-list>
+      <div class="contaienr mt-5">
+        <ion-button expand="block" type="submit" [disabled]="!eventForm.valid"
+          >Create</ion-button
+        >
+      </div>
+    </form>
+  </div>
 </ion-content>
