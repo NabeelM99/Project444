@@ -62,7 +62,7 @@
     </ion-card>
 
     <ion-grid>
-      <ion-row>
+      <ion-row *ngIf="userType === 'admin'">
         <ion-col offset="2"
           ><ion-button (click)="deleteHall()">Delete</ion-button></ion-col
         >
@@ -70,7 +70,7 @@
           ><ion-button (click)="updateHall()">Update</ion-button></ion-col
         >
       </ion-row>
-      <ion-row>
+      <ion-row *ngIf="userType === 'admin'">
         <ion-col>
           <ion-button (click)="viewHistory()" expand="block"
             >History</ion-button
@@ -78,5 +78,45 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+    <form
+      action=""
+      [formGroup]="requestForm"
+      *ngIf="userType === 'client'"
+      (ngSubmit)="clientRequest(requestForm.value)"
+    >
+      <ion-item>
+        <ion-label>Start Date</ion-label>
+        <ion-datetime
+          formControlName="startDate"
+          [min]="minDate"
+          display-format="MM/DD/YYYY"
+        ></ion-datetime>
+        <div
+          class="invalid-feedback"
+          *ngIf="requestForm.controls['startDate'].hasError('required') && requestForm.controls['startDate'].touched"
+        >
+          Start Date is required
+        </div>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>End Date</ion-label>
+        <ion-datetime
+          formControlName="endDate"
+          [min]="minDate"
+          display-format="MM/DD/YYYY"
+        ></ion-datetime>
+        <div
+          class="invalid-feedback"
+          *ngIf="requestForm.controls['endDate'].hasError('required') && requestForm.controls['endDate'].touched"
+        >
+          End Date is required
+        </div>
+      </ion-item>
+
+      <ion-button [disabled]="!requestForm.valid" expand="block" type="submit">
+        Register
+      </ion-button>
+    </form>
   </div>
 </ion-content>

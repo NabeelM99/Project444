@@ -54,7 +54,7 @@ export interface Admin {
 }
 
 export interface request {
-  id: string;
+  id?: string;
   clientID: string;
   end_date: string;
   start_date: string;
@@ -63,7 +63,6 @@ export interface request {
   status: string;
   user_type: string;
   clientName: string;
-  time: string;
   start_time: string;
   end_time: string;
 }
@@ -160,7 +159,7 @@ export class UserManagementService {
   clientHallReservations$!: Observable<reservation[]>;
 
   userID: string = '';
-  userType: string = '';
+  userType: string = 'client'; //////////////////////////////////////////////////////////////////////////////////////////////////////
 
   constructor(public firestore: Firestore) {
     this.getAdmins();
@@ -172,8 +171,19 @@ export class UserManagementService {
     this.getClientMessages();
   }
 
+  addRequest(request: any): Promise<DocumentReference<DocumentData>> {
+    return addDoc(collection(this.firestore, 'request'), request);
+  }
   addEvent(event: event): Promise<DocumentReference<DocumentData>> {
     return addDoc(collection(this.firestore, 'events'), event);
+  }
+
+  getReservationOfHall(id: string) {
+    const q = query(
+      collection(this.firestore, 'hall_reservation'),
+      where('hallID', '==', id)
+    );
+    return getDocs(q);
   }
 
   updateReservationByID(id: string, reservation: any) {

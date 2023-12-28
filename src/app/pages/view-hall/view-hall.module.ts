@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -13,8 +14,9 @@ import { ViewHallPage } from './view-hall.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    ViewHallPageRoutingModule
+    ViewHallPageRoutingModule,
+    ReactiveFormsModule,
   ],
-  declarations: [ViewHallPage]
+  declarations: [ViewHallPage],
 })
 export class ViewHallPageModule {}
