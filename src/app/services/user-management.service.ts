@@ -56,14 +56,27 @@ export interface Admin {
 export interface request {
   id: string;
   clientID: string;
-  end_date: Date;
-  start_date: Date;
+  end_date: string;
+  start_date: string;
   hallName: string;
   hallID: string;
   status: string;
   user_type: string;
   clientName: string;
   time: string;
+  start_time: string;
+  end_time: string;
+}
+
+export interface guestRequest {
+  id: string;
+  eventID: string;
+  guestID: string;
+  username: string;
+  status: string;
+  user_type: string;
+  message: string;
+  eventName: string;
 }
 
 export interface Hall {
@@ -100,7 +113,7 @@ export interface reservation {
 export interface event {
   id?: string;
   name: string;
-  agenda: string[];
+  agenda: string;
   attendance: string[];
   description: string;
   start_date: string;
@@ -134,8 +147,8 @@ export interface adminReply {
   providedIn: 'root',
 })
 export class UserManagementService {
-  halls$!: Observable<Hall[]>;
   usersReferance: CollectionReference = collection(this.firestore, 'users');
+  halls$!: Observable<Hall[]>;
   clientPending$!: Observable<request[]>;
   users$!: Observable<[Guest, Client, Admin]>;
   clients$!: Observable<Client[]>;
@@ -143,6 +156,8 @@ export class UserManagementService {
   admins$!: Observable<Admin[]>;
   events$!: Observable<event[]>;
   clientMessages$!: Observable<ClietnMessage[]>;
+
+  clientHallReservations$!: Observable<reservation[]>;
 
   userID: string = '';
   userType: string = '';
@@ -155,6 +170,46 @@ export class UserManagementService {
     this.getHalls();
     this.getEvents();
     this.getClientMessages();
+  }
+
+  getReservationByDatesAndHallID(
+    start_date: string,
+    end_date: string,
+    hallID: string,
+    clientID: string
+  ): Promise<QuerySnapshot<DocumentData, DocumentData>> {
+    const q = query(
+      collection(this.firestore, 'hall_reservation'),
+      where('start_date', '==', start_date),
+      where('end_date', '==', end_date),
+      where('hallID', '==', hallID),
+      where('clientID', '==', clientID)
+    );
+
+    return getDocs(q);
+  }
+
+  updateEventByID(id: string, event: any) {
+    const docRef = doc(this.firestore, 'events', id);
+    return updateDoc(docRef, event);
+  }
+  updateRequestStatusByID(id: string, status: string) {
+    const docRef = doc(this.firestore, 'request', id);
+    return updateDoc(docRef, { status: status });
+  }
+
+  getHallByID(id: string) {
+    const docRef = doc(this.firestore, 'Hall', id);
+    return getDoc(docRef);
+  }
+  getClientReservatoinByClientID(id: string) {
+    const q = query(
+      collection(this.firestore, 'hall_reservation'),
+      where('clientID', '==', id)
+    );
+    this.clientHallReservations$ = collectionData(q, {
+      idField: 'id',
+    }) as Observable<reservation[]>;
   }
 
   async getUserIDAndType(id: any) {
@@ -299,6 +354,13 @@ export class UserManagementService {
   // getAll guests
   // getAll clients
 
+  addResrvation(reservation: reservation): Promise<DocumentReference> {
+    return addDoc(collection(this.firestore, 'hall_reservation'), reservation);
+  }
+  getRequestByID(id: string) {
+    const docRef = doc(this.firestore, 'request', id);
+    return getDoc(docRef);
+  }
   registerGuest(
     username: string,
     password: string
@@ -401,7 +463,8 @@ export class UserManagementService {
 
   async getClient(id: string) {
     const client = doc(this.firestore, 'users', id);
-    return getDoc(client);
+    const data = await getDoc(client);
+    return data.data() as Client;
   }
 
   async getGuest(id: string) {

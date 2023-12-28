@@ -17,7 +17,7 @@ export class ViewEventPage implements OnInit {
   eventID!: string;
   event: event = {
     name: '',
-    agenda: [],
+    agenda: '',
     attendance: [],
     description: '',
     start_date: '',
